@@ -1,10 +1,12 @@
 # knitting-pattern-organisation
 
-Automated Python script that renames knitting patterns according to the designer and pattern name, as well as the garment type. Coding, knitting and organising? Best trio!
+Automated Python scripts that rename knitting patterns according to the designer and pattern name, as well as the garment type. Coding, knitting and organising? Best trio!
 
 Renames files to format: `Author_PatternName_GarmentType.pdf`
 
-No AI required - uses PDF metadata extraction and regex pattern matching.
+**Two versions available:**
+- `rename_patterns.py` - Offline version using regex pattern matching (no AI required)
+- `rename_patterns_ai.py` - AI-powered version using Claude API (more accurate but requires API key)
 
 ## Requirements
 
@@ -86,3 +88,50 @@ sweater, cardigan, pullover, tee, top, blouse, camisole, tank top, vest, dress, 
 - Scanned PDFs (images) have no extractable text - relies on filename only
 - Some patterns may need manual review (shown as "medium" confidence)
 - Non-Latin characters in author names are preserved but may affect sorting
+
+---
+
+## AI-Powered Version
+
+For better accuracy, especially with unusual pattern formats, use the AI-powered version.
+
+### Additional Requirements
+
+- `anthropic` Python package: `pip install anthropic`
+- `ANTHROPIC_API_KEY` environment variable (get from https://console.anthropic.com/)
+
+### Usage
+
+```bash
+# Set your API key
+export ANTHROPIC_API_KEY=your_key_here
+
+# Preview mode
+python3 rename_patterns_ai.py /path/to/patterns
+
+# Apply renames
+python3 rename_patterns_ai.py /path/to/patterns --apply
+```
+
+### How It Works
+
+1. Extracts text from first 3 pages using `pdftotext`
+2. Sends text + filename to Claude API for intelligent extraction
+3. Claude returns structured JSON with author, pattern name, and garment type
+4. Normalizes author names using built-in aliases (e.g., "Maria M" → "Marias Verden")
+5. Removes duplicate garment types from pattern names (e.g., "Tydes Cardigan" + cardigan → "Tydes_Cardigan")
+
+### Adding Author Aliases
+
+Edit `AUTHOR_ALIASES` in the script to standardize author name variations:
+```python
+AUTHOR_ALIASES = {
+    "maria m": "Marias Verden",
+    "leknit": "LeKnit",
+    # Add more as needed
+}
+```
+
+### Cost
+
+Uses Claude Sonnet with ~256 tokens per file. Processing 100 patterns costs approximately $0.10-0.20 in API credits.
