@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Knitting Pattern Renamer
 
 A Python script that automatically renames knitting pattern PDFs to a consistent format:
@@ -85,3 +86,7 @@ sweater, cardigan, pullover, tee, top, blouse, camisole, tank top, vest, dress, 
 - Scanned PDFs (images) have no extractable text - relies on filename only
 - Some patterns may need manual review (shown as "medium" confidence)
 - Non-Latin characters in author names are preserved but may affect sorting
+=======
+# knitting-pattern-organisation
+Automated Python script that renames the knitting patterns according to the designer and pattern name, as well as the garment type. Coding, knitting and organising? Best trio!
+>>>>>>> 0f4e98fc3d713aae411eab4b457bf926430dceb5
